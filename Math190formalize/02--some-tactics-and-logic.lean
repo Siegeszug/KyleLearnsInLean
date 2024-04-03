@@ -126,7 +126,8 @@ example ( h : P → Q → R) : Q → P → R := by
 
 -- problem 1.1
 example : P → Q → P := by
-  sorry
+  intro p _
+  exact p
   done
 
 /- If we know `P`, and we also know `P → Q`, we can deduce `Q`.
@@ -134,7 +135,8 @@ example : P → Q → P := by
 
 -- problem 1.2
 example : P → (P → Q) → Q := by
-  sorry
+  intro p f
+  exact (f p)
   done
 
 /-- `→` is transitive. That is, if `P → Q` and `Q → R` are true, then
@@ -142,13 +144,17 @@ example : P → (P → Q) → Q := by
 
 -- problem 1.3
 example : (P → Q) → (Q → R) → P → R := by
-  sorry
+  intro f g p
+  exact (g (f p))
   done
 
 
 -- problem 1.4
 example : (P → Q → R) → (P → Q) → P → R := by
-  sorry
+  intro f g p
+  apply f
+  · exact p
+  · exact (g p)
   done
 
 --------------------------------------------------------------------------------
@@ -221,37 +227,47 @@ example : P → (P → False) → Q :=
 
 -- problem 2.1
 example : True → True := by
-  sorry
+  intro; triv
   done
 
 -- problem 2.2
 example : False → True := by
-  sorry
+  intro f
+  exfalso
+  exact f
   done
 
 -- problem 2.3
 example : False → False := by
-  sorry
+  intro f
+  exact f
   done
 
 -- problem 2.4
 example : False → P := by
-  sorry
+  intro f
+  exfalso
+  exact f
   done
 
 -- problem 2.5
 example : True → False → True → False → True → False := by
-  sorry
+  intro t f
+  exfalso
+  exact f
   done
 
 -- problem 2.6
 example : P → (P → False) → False := by
-  sorry
+  intro p q
+  exact (q p)
   done
 
 -- problem 2.7
 example : (True → False) → P := by
-  sorry
+  intro f 
+  exfalso
+  exact (f True.intro)
   done
 
 
@@ -317,51 +333,73 @@ example (P Q : Prop) : (P → Q) → (¬ P → Q) → Q := by
 
 -- problem 3.1
 example : False → ¬True := by
-  sorry
+  intro f
+  exfalso
+  exact f
   done
 
 -- problem 3.2
 example : ¬False → True := by
-  sorry
+  intro
+  triv
   done
 
 -- problem 3.3
 example : True → ¬False := by
-  sorry
+  intro _ f
+  exact f
   done
 
 -- problem 3.4
 example : False → ¬P := by
-  sorry
+  intro f
+  exfalso
+  exact f
   done
 
 -- problem 3.5
 example : P → ¬P → False := by
-  sorry
+  intro p f
+  exact (f p)
   done
+
 
 -- problem 3.6
 example : P → ¬¬P := by
-  sorry
+  intro p
+  by_contra h
+  exact (h p)
   done
 
 -- problem 3.7
 example : (P → Q) → ¬Q → ¬P := by
-  sorry
+  intro f nq
+  by_cases hp : P
+  · exfalso
+    exact (nq (f hp))
+  · exact hp
   done
 
 -- problem 3.8
 example : ¬¬False → False := by
-  sorry
+  intro f
+  by_contra x
+  exact (f x)
   done
 
 -- problem 3.9
 example : ¬¬P → P := by
-  sorry
+  intro f
+  by_contra x
+  exact (f x)
   done
 
 -- the "contrapositive"
 -- problem 3.10
 example : (¬Q → ¬P) → P → Q := by
-  sorry
+  intro f p
+  by_cases q : Q
+  · exact q
+  · exfalso
+    exact ((f q) p)
   done

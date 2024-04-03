@@ -74,39 +74,49 @@ example : P ∧ Q → Q := by
 
 -- problem 1.1
 example : (P → Q → R) → P ∧ Q → R := by
-  sorry
+  intro f ⟨p, q⟩
+  exact ((f p) q)
   done
 
 -- problem 1.2
 example : P → Q → P ∧ Q := by
-  sorry
+  intro p q
+  exact ⟨p, q⟩
   done
 
 -- problem 1.3
 /-- `∧` is symmetric -/
 example : P ∧ Q → Q ∧ P := by
-  sorry
+  intro ⟨p, q⟩
+  exact ⟨q, p⟩
   done
 
 -- problem 1.4
 example : P → P ∧ True := by
-  sorry
+  intro p
+  constructor
+  · exact p
+  · triv
   done
 
 -- problem 1.5
 example : False → P ∧ False := by
-  sorry
+  intro f
+  exfalso 
+  exact f
   done
 
 -- problem 1.6
 /-- `∧` is transitive -/
 example : P ∧ Q → Q ∧ R → P ∧ R := by
-  sorry
+  intro ⟨p, _⟩ ⟨_, r⟩
+  exact ⟨p, r⟩
   done
 
 -- problem 1.7
 example : (P ∧ Q → R) → P → Q → R := by
-  sorry
+  intro f p q
+  exact (f ⟨p, q⟩)
   done
 
 --------------------------------------------------------------------------------
