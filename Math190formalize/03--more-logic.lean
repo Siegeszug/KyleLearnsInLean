@@ -217,17 +217,28 @@ example : (P ↔ Q) ↔ (Q ↔ P) := by
 
 -- problem 2.1
 example : (P ↔ Q) → (Q ↔ R) → (P ↔ R) := by
-  sorry
+  intro f g
+  constructor
+  · rw [f]
+    exact g.mp
+  · intro r
+    exact (f.mpr (g.mpr r))
   done
 
 -- problem 2.2
 example : P ∧ Q ↔ Q ∧ P := by
-  sorry
+  constructor <;>
+  · intro h
+    exact ⟨h.right, h.left⟩
   done
 
 -- problem 2.3
 example : (P ∧ Q) ∧ R ↔ P ∧ Q ∧ R := by
-  sorry
+  constructor
+  · intro ⟨⟨hll, hlr⟩, hr⟩
+    exact ⟨hll, hlr, hr⟩
+  · intro ⟨hl, hm, hr⟩
+    exact ⟨⟨hl, hm⟩, hr⟩
   done
 
 -- problem 2.4
@@ -398,5 +409,25 @@ example : ¬(P ∨ Q) ↔ ¬P ∧ ¬Q := by
 -- try the other half of deMorgan, as an exercise
 
 example : ¬(P ∧ Q) ↔ ¬P ∨ ¬Q := by
-  sorry
+  constructor
+  {
+    intro h
+    by_cases ph : P
+    · by_cases qh : Q
+      · exfalso
+        apply h
+        exact ⟨ph, qh⟩
+      · right
+        exact qh
+    · left
+      exact ph           
+  }
+  intro h
+  rcases h with hnp | hnq
+  · intro ⟨p, _⟩
+    apply hnp
+    exact p
+  · intro ⟨_, q⟩
+    apply hnq
+    exact q
   done

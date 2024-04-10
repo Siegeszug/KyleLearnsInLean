@@ -318,7 +318,6 @@ example : ¬¬ P → P := by
 
 -- finally, the `by_cases g:P` tactic splits the goal into 2 cases. In the first case
 -- `g:P` and in the second case `g:¬ P`.
-
 -- let's use it to prove the following
 example (P Q : Prop) : (P → Q) → (¬ P → Q) → Q := by
   intro h k
