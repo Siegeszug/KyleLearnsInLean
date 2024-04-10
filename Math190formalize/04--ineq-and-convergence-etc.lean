@@ -146,7 +146,7 @@ def ConvergesTo (s:ℕ → ℝ) (b:ℝ) :=
 
 example (a b : ℝ) (f:ℝ → ℝ) : f (2*a + 1) = f (1 + 3*a - a) := by
   congr
-  ring
+  ring_nf
 
 
 -- Finally, the `convert` tactic is used to apply a theorem to a goal
