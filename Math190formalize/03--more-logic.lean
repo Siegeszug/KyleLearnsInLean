@@ -243,22 +243,55 @@ example : (P ∧ Q) ∧ R ↔ P ∧ Q ∧ R := by
 
 -- problem 2.4
 example : P ↔ P ∧ True := by
-  sorry
+  constructor
+  {
+    intro p
+    exact ⟨p, True.intro⟩
+  }
+  {
+    intro ⟨p, _⟩
+    exact p
+  }
   done
 
 -- problem 2.5
 example : False ↔ P ∧ False := by
-  sorry
+  constructor
+  {
+    intro f
+    exfalso
+    exact f
+  }
+  {
+    intro ⟨_, f⟩
+    exact f
+  }
   done
 
 -- problem 2.6
 example : (P ↔ Q) → (R ↔ S) → (P ∧ R ↔ Q ∧ S) := by
-  sorry
+  rintro ⟨pq, qp⟩ ⟨rs, sr⟩
+  constructor
+  {
+    intro ⟨p, r⟩
+    exact ⟨pq p, rs r⟩
+  }
+  {
+    intro ⟨q, s⟩
+    exact ⟨qp q, sr s⟩
+  }
   done
 
 -- problem 2.7
 example : ¬(P ↔ ¬P) := by       
-  sorry
+  intro ⟨pnp, npp⟩
+  by_cases ph : P
+  · apply pnp
+    · exact ph
+    · exact ph
+  · apply ph
+    apply npp
+    exact ph
   done
 
 --------------------------------------------------------------------------------
@@ -420,14 +453,16 @@ example : ¬(P ∧ Q) ↔ ¬P ∨ ¬Q := by
       · right
         exact qh
     · left
-      exact ph           
+      exact ph
   }
-  intro h
-  rcases h with hnp | hnq
-  · intro ⟨p, _⟩
-    apply hnp
-    exact p
-  · intro ⟨_, q⟩
-    apply hnq
-    exact q
+  {
+    intro h
+    rcases h with hnp | hnq
+    · intro ⟨p, _⟩
+      apply hnp
+      exact p
+    · intro ⟨_, q⟩
+      apply hnq
+      exact q
+  }
   done
